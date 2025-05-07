@@ -25,7 +25,7 @@ public class Chatbot {
     "jdbc:sqlite:" + ACU_DATABASE_FILE.getAbsolutePath();
 
     private static final List<String>  major_game_questions = List.of(
-        "How many hours of sleep do you survive on each night?",
+         "How many hours of sleep do you survive on each night?",
         "Do you run on caffeine, water, or existential dread?",
         "Would you rather sketch in a sketchbook, debug a stubborn bug, or solder a tricky circuit?",
         "Are you more into hoodies or high-vis lab coats?",
@@ -41,7 +41,6 @@ public class Chatbot {
         "When faced with a problem, do you “circle back” or \"firewall-reset\" first?",
         "Would you tweak shader code for hours or perfect your joystick skills?",
         "Do you ever look at a motherboard and feel emotions?",
-        "Can you recite the periodic table like a rap battle?",
         "Would you rather write a 20-page research paper or fix one missing semicolon?",
         "Do you feel personally attacked by poorly kerned fonts?",
         "Have you ever reorganized your bookshelves by the Dewey Decimal System just for fun?",
@@ -54,7 +53,8 @@ public class Chatbot {
         "Are your DMs full of memes, research studies, or conspiracy theories about fonts?",
         "Do you get emotionally attached to your PowerPoint transitions?",
         "Is your favorite smell that of solder smoke, book pages, or cold brew?",
-        "Have you ever whispered sweet nothings to a robot or spreadsheet?"       
+        "Have you ever whispered sweet nothings to a robot or spreadsheet?"      
+        
         );
 
 
@@ -65,7 +65,8 @@ public class Chatbot {
                 return lc.contains("undecided")
                     || lc.contains("not sure")
                     || lc.contains("help picking")
-                    || lc.contains("need help choosing");
+                    || lc.contains("need help choosing")
+                    || lc.contains("game");
            }
 
     private static void playGame(BufferedReader reader) throws IOException, SQLException {
@@ -73,11 +74,12 @@ public class Chatbot {
         Map<String,Integer> scores = new HashMap<>();
 
         System.out.println("Welcome to the \"Pick Your Major\" game!");
+        System.out.println("Type 'stop' to end the game at any time.");
         try (Connection conn = DriverManager.getConnection(DB_URL)){
             for (String q : major_game_questions) {
                 System.out.println("\nGame: " + q);
                 String answer = reader.readLine().trim().toLowerCase();
-                if (answer.equals("stop")) {
+                if (answer.equalsIgnoreCase("stop")) {
                     System.out.println("Game: You chose to stop the game early. Goodbye!");
                     return;
                 }
@@ -114,7 +116,6 @@ public class Chatbot {
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.load();
         String APIKEY = dotenv.get("MY_API_KEY");
-        System.out.println("API Key: " + APIKEY);
 
 
         assistant = new OpenAiAssistantEngine(APIKEY);
