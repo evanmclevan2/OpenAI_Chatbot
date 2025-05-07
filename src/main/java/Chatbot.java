@@ -77,6 +77,10 @@ public class Chatbot {
             for (String q : major_game_questions) {
                 System.out.println("\nGame: " + q);
                 String answer = reader.readLine().trim().toLowerCase();
+                if (answer.equals("stop")) {
+                    System.out.println("Game: You chose to stop the game early. Goodbye!");
+                    return;
+                }
                 for (String token : answer.split("\\W+")) {
                     if (token.isBlank()) continue;
 
@@ -203,6 +207,7 @@ public class Chatbot {
         String threadId = null;
 
         System.out.println("\n=== ACU AI Academic Advisor Chat ===");
+        System.out.println("If you don't know your major or are unsure about which major to choose, type 'game' to play the \"Pick Your Major\" game");
         System.out.println("Type 'exit' to end the conversation");
 
         try {
